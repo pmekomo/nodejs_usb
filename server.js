@@ -1,5 +1,5 @@
 var http = require('http');
-var usb  = require('usb');
+//var usb  = require('usb');
 var usbDetect = require('usb-detection')
 var express = require('express');
 
