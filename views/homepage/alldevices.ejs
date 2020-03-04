@@ -1,0 +1,17 @@
+<h1><strong> ALL AVAILABLE DEVICES </strong> </h1>
+
+<% for(var i=0; i<devices.length; i++){ %>
+    <ul><strong><%= devices[i].deviceName %></strong>
+        <li>manufacturer: <%= devices[i].manufacturer %></li>
+        <li>vendorId: <%= devices[i].vendorId %></li>
+        <li>productId: <%= devices[i].productId %></li>
+        <li>locationId: <%= devices[i].locationId %></li>
+        <li>serialNumber: <%= devices[i].serialNumber %></li>
+        <li>deviceAddress: <%= devices[i].deviceAddress %></li>
+    </ul>
+    <a href=insert?vId=<%= devices[i].vendorId %>&pId=<%= devices[i].productId %>> save the equipment in the database </a> <br>
+<% } %>
+<br>
+<br>
+<h2><a href=insertallintodatabase> Insert all these devices into the database </a></h2>
+<h2><a href=/> Back to the main page </a></h2>

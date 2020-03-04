@@ -1,0 +1,15 @@
+<h1> <strong> Details of Equipment <%=idToFind %>:</strong></h1>
+
+<% for(var i=0; i<doc.length; i++){ %>
+    [ deviceName: <%= doc[i].deviceName %> ] ] <br>
+    [ manufacturer: <%= doc[i].manufacturer %> ] <br>
+    [ vendorId: <%= doc[i].vendorId %> ] <br>
+    [ productId: <%= doc[i].productId %> ] <br>
+    [ locationId: <%= doc[i].locationId %> ] <br>
+    [ serialNumber: <%= doc[i].serialNumber %> ] <br>
+    [ deviceAddress: <%= doc[i].deviceAddress %> ] <br>
+<% } %>
+
+<h2><a href=action> Action to perform </a></h2>
+<h2><a href=displaydatabase> Display the database content </a></h2>
+<h2><a href=delete?id=<%=idToFind %> style="color: rgb(255, 0, 0)"> Delete the equipment </a></h2>

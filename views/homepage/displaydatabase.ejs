@@ -1,0 +1,10 @@
+<h1><strong> ALL AVAILABLE DEVICES IN THE DATABASE </strong> </h1>
+
+<% for(var i=0; i<doc.length; i++){ %>
+    <a href=device?id=<%= doc[i]._id %>> <strong> EQ-ID: <%= doc[i]._id %> </strong></a><br>
+    [ deviceName: <%= doc[i].deviceName %> ] <br>
+    [ manufacturer: <%= doc[i].manufacturer %>] <br>
+<% } %>
+
+<h2><a href=/> Back to the main page </a></h2>
+<h2><a href=clearDB style="color: rgb(255, 0, 0)"> Clear the database </a></h2>
