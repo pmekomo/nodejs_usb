@@ -71,17 +71,17 @@ function init(callback) {
 
 function loadRoutes(callback) {
     expressApp.get('/', function (req, res) {
-        res.render('homepage/index');
+        res.render('pages/index');
     })
     .get('/alldevices', function (req, res){
         var text;
         usbDetect.find(function(err, devices) {
         console.log(devices, err);
-        res.render("homepage/alldevices", {devices: devices});
+        res.render("pages/alldevices", {devices: devices});
         });
     })
     .get('/displaydatabase', function(req, res){
-        MongoClient.connect(url, function(err, client) {
+        MongoClient.connect(url, {useUnifiedTopology: true}, function(err, client) {
             if (err) throw err;
             
             console.log("AllDatabase:Connected");
@@ -95,7 +95,7 @@ function loadRoutes(callback) {
                 }
             }, function(err){
                     client.close();
-                    res.render("homepage/displaydatabase", {doc:documents});
+                    res.render("pages/displaydatabase", {doc:documents});
                }
             );
         });
@@ -107,7 +107,7 @@ function loadRoutes(callback) {
         var MongoObjectID = require("mongodb").ObjectID;
         var objToFind     = { _id: new MongoObjectID(idToFind) };
         
-        MongoClient.connect(url, function(err, client) {
+        MongoClient.connect(url, {useUnifiedTopology: true}, function(err, client) {
             if (err) throw err;
             
             console.log("Device:Connected");
@@ -118,7 +118,7 @@ function loadRoutes(callback) {
                 if (doc != null) {
                     documents.push(doc);
                 }
-                res.render("homepage/device", {doc:documents, idToFind:idToFind});
+                res.render("pages/device", {doc:documents, idToFind:idToFind});
             });
         });
     })
@@ -127,7 +127,7 @@ function loadRoutes(callback) {
         var vid = req.query.vId;
 
         usbDetect.find(parseInt(vid,10), parseInt(pid, 10), function(err, devices) { console.log('find '+vid+' '+pid, devices, err);
-            MongoClient.connect(url, function(err, client) {
+            MongoClient.connect(url, {useUnifiedTopology: true}, function(err, client) {
                 if (err) throw err;
                 
                 console.log("DBInsert:Connected");
@@ -138,7 +138,7 @@ function loadRoutes(callback) {
             
                     console.log("Number of documents inserted: " + rr.insertedCount);
                     
-                    res.render("homepage/dbinsert", {count:rr.insertedCount});
+                    res.render("pages/dbinsert", {count:rr.insertedCount});
                     client.close();
                 });
             });
@@ -149,7 +149,7 @@ function loadRoutes(callback) {
         
         usbDetect.startMonitoring();
         usbDetect.find(function(err, devices) {
-            MongoClient.connect(url, function(err, client) {
+            MongoClient.connect(url, {useUnifiedTopology: true}, function(err, client) {
                 if (err) throw err;
                 
                 console.log("DBInsertAll:Connected");
@@ -159,7 +159,7 @@ function loadRoutes(callback) {
                     
                     console.log("Number of documents inserted: " + rr.insertedCount);
                     
-                    res.render("homepage/dbinsert", {count:rr.insertedCount});
+                    res.render("pages/dbinsert", {count:rr.insertedCount});
                     client.close();
                 });
             });
@@ -170,7 +170,7 @@ function loadRoutes(callback) {
         var MongoObjectID = require("mongodb").ObjectID;
         var objToFind     = { _id: new MongoObjectID(idToFind) };
         
-        MongoClient.connect(url, function(err, client) {
+        MongoClient.connect(url, {useUnifiedTopology: true}, function(err, client) {
             if (err) throw err;
             
             console.log("Delete:Connected");
@@ -178,14 +178,14 @@ function loadRoutes(callback) {
             var cursor = db.collection(devicesCollectionName).deleteOne(objToFind, null, function(error, result) {
                 if (err) throw err;
 
-                res.render("homepage/delete", {idToFind:idToFind});
+                res.render("pages/delete", {idToFind:idToFind});
                 client.close();
             });
         });
     })
     .get('/clearDB', function(req, res){
         
-        MongoClient.connect(url, function(err, client) {
+        MongoClient.connect(url, {useUnifiedTopology: true}, function(err, client) {
             if (err) throw err;
             
             console.log("ClearDB:Connected");
@@ -193,11 +193,14 @@ function loadRoutes(callback) {
             var cursor = db.collection(devicesCollectionName).deleteMany({}, function(error, obj) {
                 if (err) throw err;
 
-                res.render("homepage/deleteall", {count:obj.result.n});
+                res.render("pages/deleteall", {count:obj.result.n});
                 client.close();
             });
         });
     })
+    .get('/action', function(req, res){
+        res.render("pages/action");
+    })           
     .use(function(req, res, next){
         res.setHeader('Content-Type', 'text/plain');
         res.status(404).send('Page not found !');
