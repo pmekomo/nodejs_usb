@@ -76,8 +76,8 @@ function loadRoutes(callback) {
     .get('/alldevices', function (req, res){
         var text;
         usbDetect.find(function(err, devices) {
-        console.log(devices, err);
-        res.render("pages/alldevices", {devices: devices});
+            //console.log(devices, err);
+            res.render("pages/alldevices", {devices: devices});
         });
     })
     .get('/displaydatabase', function(req, res){
@@ -106,7 +106,9 @@ function loadRoutes(callback) {
         console.log(idToFind);
         var MongoObjectID = require("mongodb").ObjectID;
         var objToFind     = { _id: new MongoObjectID(idToFind) };
-        
+        var objectfound;
+        var connected = false;
+
         MongoClient.connect(url, {useUnifiedTopology: true}, function(err, client) {
             if (err) throw err;
             
@@ -118,7 +120,13 @@ function loadRoutes(callback) {
                 if (doc != null) {
                     documents.push(doc);
                 }
-                res.render("pages/device", {doc:documents, idToFind:idToFind});
+                usbDetect.find(function(err, devices) {
+                    objectfound = devices.find(element => ((element.productId == doc.productId) && (element.vendorId == doc.vendorId)));
+                    if (objectfound != undefined){
+                        connected = true;
+                    }
+                    res.render("pages/device", {doc:documents, idToFind:idToFind, connected:connected});
+                })
             });
         });
     })

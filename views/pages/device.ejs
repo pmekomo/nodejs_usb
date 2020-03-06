@@ -9,7 +9,12 @@
     [ serialNumber: <%= doc[i].serialNumber %> ] <br>
     [ deviceAddress: <%= doc[i].deviceAddress %> ] <br>
 <% } %>
+<% if(connected){ %>
+    <h3 style="color: chartreuse;"> Connected <h3>
+    <h2><a href=action style="color: #6e696a67"> Action to perform </a></h2>
+ <% } else{ %>
+    <h3 style="color: rgb(255, 0, 0);"> Disconnected <h3>
+<% } %>
 
-<h2><a href=action style="color: #6e696a67"> Action to perform </a></h2>
 <h2><a href=displaydatabase> Display the database content </a></h2>
 <h2><a href=delete?id=<%=idToFind %> style="color: rgb(255, 0, 0)"> Delete the equipment </a></h2>
